@@ -26,7 +26,7 @@ class  BaseballGame {
             }
         }
         // 디버깅용
-        print("정답: \(quizNum)")
+        print("정답 : \(quizNum)")
     }
     
     //게임을 시작하는 함수
@@ -86,7 +86,7 @@ class  BaseballGame {
         if digits.count == 3 && uniqueDigits.count == 3 && digits[0] != 0 {
             return digits // 유효한 입력값이면 변환된 정수 배열 반환
         }
-        return nil // 잘못된 입력값이면 nil 반환  
+        return nil // 잘못된 입력값이면 nil 반환
     }
     
     //입력값과 정답을 비교하여 스트라이크와 볼 개수를 계산하는 함수
