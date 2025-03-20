@@ -6,9 +6,11 @@
 //
 import Foundation
 
-class  BaseballGame {
+class BaseballGame {
     // 정답으로 사용될 3자리 랜덤 숫자를 저장할 배열
     var quizNum: [Int] = []
+    var tryCount = 0 // 시도 횟수 변수
+    static var gameHistory: [Int] = [] // 게임기록 저장 배열 (static으로 선언해서 공유)
     
     //0부터 9까지 서로 다른 3개의 숫자를 랜덤으로 선택하는 함수
     func makeQuizNum() {
@@ -19,14 +21,14 @@ class  BaseballGame {
         while quizNum.count < 3 {
             // 0부터 9까지의 랜덤한 숫자를 생성, 첫번째 자리는 0이면 안됌, 삼항 연산자 활용.
             let number = quizNum.isEmpty ? Int.random(in: 1...9) : Int.random(in: 0...9)
-           
+            
             // 중복된 숫자가 없는 경우에만 배열에 추가
             if !quizNum.contains(number) {
                 quizNum.append(number)
             }
         }
-        // 디버깅용
-        print("정답 : \(quizNum)")
+//        // 디버깅용
+//        print("정답 : \(quizNum)")
     }
     
     //게임을 시작하는 함수
@@ -39,6 +41,7 @@ class  BaseballGame {
         while true {
             // 사용자로부터 입력을 받음
             let userGuess = getUserInput()
+            tryCount += 1
             
             // 입력값과 정답을 비교하여 스트라이크와 볼 개수를 계산
             let (strike, ball) = makeHint(userGuess)
@@ -46,6 +49,7 @@ class  BaseballGame {
             // 3스트라이크인 경우 정답을 맞췄으므로 게임 종료
             if strike == 3 {
                 print("정답입니다. 게임을 종료하고 메인메뉴로 돌아갑니다.\n")
+                BaseballGame.gameHistory.append(tryCount) // 시도횟수 저장된것을 게임기록에 추가하기
                 return //`return`을 사용하여 게임을 종료하고 메인 메뉴로 돌아감
             }
             // 스트라이크와 볼이 모두 0이면 "Nothing" 출력
@@ -107,29 +111,42 @@ class  BaseballGame {
         }
         return (strike, ball) // 스트라이크와 볼 개수를 튜플로 반환
     }
-}
-// 게임 시작 전 메인 메뉴를 보여주는 함수
-func showMenu() {
-    while true { // 프로그램이 종료되기 전까지 반복 실행
-        print("\n원하시는 번호를 입력해주세요.")
-        print("1. 게임 시작하기  2. 게임 기록 보기  3. 종료하기")
-
-        print("입력: ", terminator: "")
-        if let input = readLine(), let choice = Int(input) {
-            switch choice {
-            case 1:
-                let game = BaseballGame()
-                game.start() // 게임 시작
-            case 2:
-                print("게임 기록 보기 기능은 아직 구현되지 않았습니다.")
-            case 3:
-                print("프로그램을 종료합니다.")
-                return // 프로그램 종료
-            default:
-                print("잘못된 입력입니다. 1~3 사이의 숫자를 입력해주세요.")
+    func showMenu() {
+        while true { // 프로그램이 종료되기 전까지 반복 실행
+            print("\n원하시는 번호를 입력해주세요.")
+            print("1. 게임 시작하기  2. 게임 기록 보기  3. 종료하기")
+            
+            print("입력: ", terminator: "")
+            if let input = readLine(), let choice = Int(input) {
+                switch choice {
+                case 1:
+                    let game = BaseballGame()
+                    game.start() // 게임 시작
+                case 2:
+                    let gameHistory = BaseballGame()
+                    game.showGameHistory() // 게임 기록 보기
+                case 3:
+                    print("프로그램을 종료합니다.")
+                    return // 프로그램 종료
+                default:
+                    print("잘못된 입력입니다. 1~3 사이의 숫자를 입력해주세요.")
+                }
+            } else {
+                print("숫자로 입력해주세요.")
             }
+        }
+    }
+    func showGameHistory() {
+        if BaseballGame.gameHistory.isEmpty {
+            print("아직 진행한 게임이 없습니다.")
         } else {
-            print("숫자로 입력해주세요.")
+            print("\n 게임 기록 보기")
+            for (index, count) in BaseballGame.gameHistory.enumerated() {
+                print("\(index + 1)번째 게임: 시도 횟수 - \(count)번")
+            }
         }
     }
 }
+        
+    
+

@@ -14,5 +14,5 @@
 */
 import Foundation
 
-showMenu()
- 
+let game = BaseballGame()
+game.showMenu() // 게임 시작
