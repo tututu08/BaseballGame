@@ -1,9 +1,3 @@
-//
-//  File.swift
-//  BaseballGame
-//
-//  Created by 강성훈 on 3/17/25.
-//
 import Foundation
 
 class BaseballGame {
@@ -27,8 +21,8 @@ class BaseballGame {
                 quizNum.append(number)
             }
         }
-//        // 디버깅용
-//        print("정답 : \(quizNum)")
+//        디버깅용
+        print("정답 : \(quizNum)")
     }
     
     //게임을 시작하는 함수
